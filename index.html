@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Мои финансы">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Мои финансы</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#182235;--muted:#718096;--line:#e6eaf0;--blue:#315efb;--green:#16845b;--red:#c84b54;--soft:#edf2ff;--shadow:0 8px 28px rgba(28,43,70,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+header{padding:22px 18px 14px;background:linear-gradient(135deg,#172c49,#254b78);color:white;border-radius:0 0 25px 25px}
+.top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:12px;opacity:.75;letter-spacing:.08em;text-transform:uppercase}.month-title{font-size:22px;font-weight:750;margin-top:5px}.networth{font-size:32px;font-weight:800;margin:17px 0 3px;letter-spacing:-.7px}.sub{font-size:12px;opacity:.75}.headstats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.headstat{background:#ffffff18;border:1px solid #ffffff20;padding:11px;border-radius:14px}.headstat small{display:block;opacity:.72;font-size:11px;margin-bottom:5px}.headstat b{font-size:17px}
+main{max-width:760px;margin:0 auto;padding:15px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#e9edf4;padding:5px;border-radius:14px;margin-bottom:15px}.tab{border:0;background:transparent;color:#657188;padding:10px 3px;border-radius:10px;font-size:12px;font-weight:650}.tab.active{background:white;color:#20314f;box-shadow:0 2px 8px #1b2b4610}
+.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:13px;box-shadow:var(--shadow)}.card h2{font-size:16px;margin:0 0 13px}.card h3{font-size:14px;margin:0 0 10px}.muted{color:var(--muted)}.small{font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.divider{height:1px;background:var(--line);margin:12px 0}.metric{font-size:22px;font-weight:760}.positive{color:var(--green)}.negative{color:var(--red)}
+label{display:block;font-size:12px;color:#657188;font-weight:650;margin:10px 0 5px}input,select{width:100%;border:1px solid #dce2eb;border-radius:11px;padding:12px;background:#fff;color:var(--ink);font:inherit;min-height:44px}input:focus,select:focus{outline:2px solid #b9c8ff;border-color:var(--blue)}
+button{font:inherit;cursor:pointer}.btn{border:0;background:var(--blue);color:#fff;border-radius:11px;padding:12px 15px;font-weight:700}.btn.secondary{background:#edf1f7;color:#34435b}.btn.danger{background:#fff0f0;color:var(--red)}.btn.smallbtn{padding:8px 11px;font-size:12px}.btn.full{width:100%;margin-top:13px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.listrow{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}.listrow:last-child{border-bottom:0}.listrow strong{font-size:14px}.tag{font-size:11px;padding:4px 8px;border-radius:99px;background:#eef2f8;color:#607087}.notice{background:#fff7e7;border:1px solid #f5dfad;color:#805b16;padding:12px;border-radius:13px;font-size:13px;margin-bottom:13px}.empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}.barwrap{height:150px;display:flex;align-items:end;gap:8px;padding:10px 2px 0}.barcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:5px;min-width:0}.bar{width:100%;max-width:34px;border-radius:7px 7px 2px 2px;background:#7893f8;min-height:2px}.barlabel{font-size:10px;color:var(--muted)}.barvalue{font-size:9px;color:var(--muted);white-space:nowrap}.footnote{font-size:11px;color:var(--muted);line-height:1.45;margin:10px 2px}.bottomnav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;z-index:5}.bottomnav span{font-size:10px;color:#718096;text-align:center}.bottomnav b{display:block;font-size:18px;color:#3d5272;margin-bottom:2px}.hidden{display:none!important}.inline{display:flex;gap:8px;align-items:center}.inline>*{flex:1}
+@media(min-width:650px){header{padding:28px calc((100% - 720px)/2) 20px}.networth{font-size:38px}.tabs{max-width:520px}.bottomnav{display:none}body{padding-bottom:20px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><div><div class="eyebrow">Личный финансовый кабинет</div><div class="month-title" id="headerMonth">Текущий месяц</div></div><div style="font-size:25px">◈</div></div>
+ <div class="networth" id="headerTotal">€0.00</div><div class="sub">Общий капитал на конец месяца</div>
+ <div class="headstats"><div class="headstat"><small>Доходы</small><b id="headerIncome">€0.00</b></div><div class="headstat"><small>Расходы</small><b id="headerExpense">€0.00</b></div></div>
+</header>
+<main>
+ <div id="reminderNotice" class="notice hidden"></div>
+ <nav class="tabs">
+  <button class="tab active" data-tab="overview">Обзор</button><button class="tab" data-tab="entry">Заполнить</button><button class="tab" data-tab="history">История</button><button class="tab" data-tab="settings">Настройки</button>
+ </nav>
+ <section id="overview" class="panel active">
+  <div class="card"><div class="row"><h2>Финансовый результат</h2><span class="tag" id="overviewMonth"></span></div>
+   <div class="grid2"><div><div class="muted small">Чистый поток</div><div class="metric" id="netFlow">€0.00</div></div><div><div class="muted small">Изменение капитала</div><div class="metric" id="capitalChange">—</div></div></div>
+   <div class="divider"></div><div class="row"><span class="muted small">Остатки на счетах</span><strong id="accountsTotal">€0.00</strong></div>
+  </div>
+  <div class="card"><h2>Динамика капитала</h2><div id="chart" class="barwrap"></div><div class="footnote">Столбцы показывают общий остаток по месяцам. Для корректной динамики сохраняй данные каждый месяц.</div></div>
+  <div class="card"><h2>Счета и наличные</h2><div id="accountOverview"></div></div>
+  <div class="card"><h2>Доходы и расходы</h2><div class="grid2"><div><h3 class="positive">Доходы</h3><div id="incomeOverview"></div></div><div><h3 class="negative">Расходы</h3><div id="expenseOverview"></div></div></div></div>
+ </section>
+ <section id="entry" class="panel">
+  <div class="card"><div class="row"><h2>Ежемесячная запись</h2><span class="tag">EUR</span></div>
+   <label for="recordMonth">Месяц учёта</label><input type="month" id="recordMonth">
+   <div class="divider"></div><div class="row"><h3>Банковские счета и наличные</h3><button class="btn secondary smallbtn" id="addAccountBtn">+ Счёт</button></div>
+   <div id="accountInputs"></div>
+   <div class="divider"></div><h3>Доходы</h3><div id="incomeInputs"></div><button class="btn secondary smallbtn" id="addIncomeBtn">+ Категория дохода</button>
+   <div class="divider"></div><h3>Расходы</h3><div id="expenseInputs"></div><button class="btn secondary smallbtn" id="addExpenseBtn">+ Категория расхода</button>
+   <label for="note">Комментарий к месяцу</label><input id="note" placeholder="Например: премия, поездка, крупная покупка">
+   <button class="btn full" id="saveRecord">Сохранить месяц</button>
+   <div class="footnote">При повторном сохранении месяца запись обновится. Сохраняются остатки на конец месяца, а доходы и расходы — суммы за выбранный месяц.</div>
+  </div>
+ </section>
+ <section id="history" class="panel">
+  <div class="card"><div class="row"><h2>История по месяцам</h2><button class="btn secondary smallbtn" id="exportCsv">Экспорт CSV</button></div><div id="historyList"></div></div>
+  <div class="card"><h2>Резервная копия</h2><p class="muted small">Сохрани полный файл с данными, чтобы перенести их или восстановить после переустановки.</p><div class="grid2"><button class="btn secondary" id="exportJson">Скачать копию</button><button class="btn secondary" id="importJsonBtn">Восстановить копию</button></div><input type="file" id="importJson" accept="application/json" class="hidden"></div>
+ </section>
+ <section id="settings" class="panel">
+  <div class="card"><h2>Счета</h2><p class="muted small">Добавляй банки, электронные кошельки и наличные. Названия можно изменить в списке.</p><div id="manageAccounts"></div><div class="inline"><input id="newAccountName" placeholder="Название банка или счёта"><button class="btn" id="createAccount">Добавить</button></div></div>
+  <div class="card"><h2>Напоминание</h2><p class="muted small">Выбери день месяца. Приложение покажет напоминание при открытии, если запись за текущий месяц ещё не сохранена.</p><div class="grid2"><div><label for="reminderDay">День месяца</label><select id="reminderDay"><option value="1">1-е число</option><option value="2">2-е число</option><option value="3">3-е число</option><option value="4">4-е число</option><option value="5">5-е число</option><option value="10">10-е число</option><option value="15">15-е число</option><option value="20">20-е число</option><option value="25">25-е число</option><option value="28">28-е число</option></select></div><div><label for="reminderTime">Время (для подсказки)</label><input type="time" id="reminderTime" value="10:00"></div></div><button class="btn full" id="saveReminder">Сохранить напоминание</button><div class="footnote">Ограничение iPhone: автономное веб-приложение не может гарантированно запускать локальное уведомление по расписанию, когда оно закрыто. Для надёжного сигнала создай повторяющееся напоминание в приложении «Напоминания» iPhone.</div></div>
+  <div class="card"><h2>Данные и конфиденциальность</h2><p class="muted small">Данные хранятся локально в браузере этого устройства. Приложение не подключается к банкам и не отправляет суммы на сервер. Очистка данных Safari или удаление сайта может удалить записи — регулярно делай резервную копию.</p><button class="btn danger full" id="clearData">Удалить все данные приложения</button></div>
+ </section>
+</main>
+<div class="bottomnav"><span onclick="switchTab('overview')"><b>⌂</b>Обзор</span><span onclick="switchTab('entry')"><b>＋</b>Заполнить</span><span onclick="switchTab('history')"><b>▤</b>История</span><span onclick="switchTab('settings')"><b>⚙</b>Настройки</span></div>
+<script>
+const KEY='my_finances_v1';
+const defaultState={accounts:[{id:'a1',name:'Основной банк'},{id:'a2',name:'Наличные'}],records:{},reminder:{day:1,time:'10:00'},categories:{income:['Зарплата','Премии','Дополнительный доход','Прочее'],expense:['Жильё','Питание','Транспорт','Покупки','Прочее']}};
+let state=loadState();
+function loadState(){try{return {...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return structuredClone(defaultState)}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(state))}
+function money(n){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(n)||0)}
+function monthNow(){return new Date().toISOString().slice(0,7)}
+function monthLabel(m){if(!m)return '';let [y,mo]=m.split('-').map(Number);return new Date(y,mo-1,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'})}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function getRecord(m){return state.records[m]||{balances:{},income:{},expense:{},note:''}}
+function totals(r){let bal=Object.values(r.balances||{}).reduce((a,b)=>a+(+b||0),0),inc=Object.values(r.income||{}).reduce((a,b)=>a+(+b||0),0),exp=Object.values(r.expense||{}).reduce((a,b)=>a+(+b||0),0);return {bal,inc,exp,net:inc-exp}}
+function latestMonth(){return Object.keys(state.records).sort().at(-1)||monthNow()}
+function render(){let m=latestMonth(),r=getRecord(m),t=totals(r);document.getElementById('headerMonth').textContent=monthLabel(m);document.getElementById('headerTotal').textContent=money(t.bal);document.getElementById('headerIncome').textContent=money(t.inc);document.getElementById('headerExpense').textContent=money(t.exp);document.getElementById('overviewMonth').textContent=monthLabel(m);document.getElementById('netFlow').textContent=money(t.net);document.getElementById('netFlow').className='metric '+(t.net>=0?'positive':'negative');let months=Object.keys(state.records).sort(),prev=months.filter(x=>x<m).at(-1),change=prev===undefined?null:t.bal-totals(getRecord(prev)).bal;document.getElementById('capitalChange').textContent=change===null?'—':(change>=0?'+':'')+money(change);document.getElementById('capitalChange').className='metric '+(change===null?'':change>=0?'positive':'negative');document.getElementById('accountsTotal').textContent=money(t.bal);
+document.getElementById('accountOverview').innerHTML=state.accounts.map(a=>`<div class="listrow"><span>${esc(a.name)}</span><strong>${money(r.balances?.[a.id]||0)}</strong></div>`).join('')||'<div class="empty">Добавь первый счёт в настройках</div>';
+document.getElementById('incomeOverview').innerHTML=Object.entries(r.income||{}).filter(x=>+x[1]>0).map(([k,v])=>`<div class="listrow"><span class="small">${esc(k)}</span><strong class="positive">${money(v)}</strong></div>`).join('')||'<div class="empty">Нет данных</div>';
+document.getElementById('expenseOverview').innerHTML=Object.entries(r.expense||{}).filter(x=>+x[1]>0).map(([k,v])=>`<div class="listrow"><span class="small">${esc(k)}</span><strong class="negative">${money(v)}</strong></div>`).join('')||'<div class="empty">Нет данных</div>';
+renderChart(months);renderHistory();renderManageAccounts();checkReminder();}
+function renderChart(months){let last=months.slice(-6),vals=last.map(m=>totals(getRecord(m)).bal),max=Math.max(1,...vals);document.getElementById('chart').innerHTML=last.length?last.map((m,i)=>`<div class="barcol"><div class="barvalue">${vals[i]>=1000?(vals[i]/1000).toFixed(1)+'k':Math.round(vals[i])}</div><div class="bar" style="height:${Math.max(3,vals[i]/max*100)}%"></div><div class="barlabel">${m.slice(5)}</div></div>`).join(''):'<div class="empty">Сохрани первый месяц, чтобы увидеть динамику</div>'}
+function renderHistory(){let months=Object.keys(state.records).sort().reverse();document.getElementById('historyList').innerHTML=months.length?months.map(m=>{let t=totals(getRecord(m));return `<div class="listrow"><div><strong>${esc(monthLabel(m))}</strong><div class="small muted">Доход ${money(t.inc)} · Расход ${money(t.exp)}</div></div><div style="text-align:right"><strong>${money(t.bal)}</strong><div><button class="btn secondary smallbtn" onclick="editMonth('${m}')">Открыть</button></div></div></div>`}).join(''):'<div class="empty">История пока пуста. Сохрани первый месяц.</div>'}
+function renderManageAccounts(){document.getElementById('manageAccounts').innerHTML=state.accounts.map(a=>`<div class="listrow"><span>${esc(a.name)}</span><button class="btn danger smallbtn" onclick="removeAccount('${a.id}')">Удалить</button></div>`).join('')}
+function renderEntry(m){let r=getRecord(m);document.getElementById('recordMonth').value=m;document.getElementById('accountInputs').innerHTML=state.accounts.map(a=>`<div class="grid2"><div><label>${esc(a.name)}</label></div><div><input type="number" min="0" step="0.01" inputmode="decimal" data-balance="${a.id}" placeholder="0.00" value="${r.balances?.[a.id]??''}"></div></div>`).join('')||'<div class="empty">Сначала добавь счёт в настройках</div>';renderCategoryInputs('income',r.income||{});renderCategoryInputs('expense',r.expense||{});document.getElementById('note').value=r.note||''}
+function renderCategoryInputs(type,values){let target=document.getElementById(type+'Inputs');target.innerHTML=state.categories[type].map((c,i)=>`<div class="grid2"><div><label>${esc(c)}</label></div><div><input type="number" min="0" step="0.01" inputmode="decimal" data-${type}="${esc(c)}" placeholder="0.00" value="${values[c]??''}"></div></div>`).join('')}
+function addCategory(type){let name=prompt('Название новой категории:');if(!name||!name.trim())return;name=name.trim();if(!state.categories[type].includes(name))state.categories[type].push(name);persist();renderEntry(document.getElementById('recordMonth').value||monthNow())}
+function switchTab(id){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));if(id==='entry'&&!document.getElementById('recordMonth').value)renderEntry(monthNow())}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+document.getElementById('recordMonth').value=monthNow();renderEntry(monthNow());
+document.getElementById('recordMonth').addEventListener('change',e=>renderEntry(e.target.value));
+document.getElementById('addIncomeBtn').onclick=()=>addCategory('income');document.getElementById('addExpenseBtn').onclick=()=>addCategory('expense');
+document.getElementById('addAccountBtn').onclick=()=>{switchTab('settings');document.getElementById('newAccountName').focus()};
+document.getElementById('saveRecord').onclick=()=>{let m=document.getElementById('recordMonth').value;if(!m){alert('Выбери месяц');return}let balances={},income={},expense={};document.querySelectorAll('[data-balance]').forEach(x=>balances[x.dataset.balance]=+x.value||0);document.querySelectorAll('[data-income]').forEach(x=>income[x.dataset.income]=+x.value||0);document.querySelectorAll('[data-expense]').forEach(x=>expense[x.dataset.expense]=+x.value||0);state.records[m]={balances,income,expense,note:document.getElementById('note').value,updatedAt:new Date().toISOString()};persist();render();alert('Данные за '+monthLabel(m)+' сохранены.');switchTab('overview')};
+document.getElementById('createAccount').onclick=()=>{let name=document.getElementById('newAccountName').value.trim();if(!name)return;state.accounts.push({id:'a'+Date.now(),name});document.getElementById('newAccountName').value='';persist();render();renderEntry(document.getElementById('recordMonth').value||monthNow())};
+function removeAccount(id){if(!confirm('Удалить этот счёт? Его сохранённые остатки также перестанут учитываться.'))return;state.accounts=state.accounts.filter(a=>a.id!==id);persist();render();renderEntry(document.getElementById('recordMonth').value||monthNow())}
+function editMonth(m){switchTab('entry');renderEntry(m)}
+document.getElementById('saveReminder').onclick=()=>{state.reminder.day=+document.getElementById('reminderDay').value;state.reminder.time=document.getElementById('reminderTime').value;persist();checkReminder();alert('Настройка напоминания сохранена.')};
+function checkReminder(){let d=new Date(),ym=d.toISOString().slice(0,7),saved=!!state.records[ym],day=state.reminder.day||1;document.getElementById('reminderDay').value=String(day);document.getElementById('reminderTime').value=state.reminder.time||'10:00';let n=document.getElementById('reminderNotice');if(d.getDate()>=day&&!saved){n.textContent=`Напоминание: заполни финансовую форму за ${monthLabel(ym)}. Выбранная дата — ${day}-е число.`;n.classList.remove('hidden')}else n.classList.add('hidden')}
+function download(name,content,type){let blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+document.getElementById('exportJson').onclick=()=>download('my-finances-backup.json',JSON.stringify(state,null,2),'application/json');
+document.getElementById('importJsonBtn').onclick=()=>document.getElementById('importJson').click();
+document.getElementById('importJson').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!obj.records||!obj.accounts)throw Error();if(!confirm('Заменить текущие данные содержимым резервной копии?'))return;state={...defaultState,...obj};persist();render();renderEntry(latestMonth());alert('Резервная копия восстановлена.')}catch(err){alert('Не удалось прочитать файл резервной копии.')}e.target.value=''};
+document.getElementById('exportCsv').onclick=()=>{let rows=[['Месяц','Счёт','Остаток EUR','Доходы EUR','Расходы EUR','Комментарий']];Object.keys(state.records).sort().forEach(m=>{let r=getRecord(m),t=totals(r);state.accounts.forEach(a=>rows.push([m,a.name,r.balances?.[a.id]||0,'','','']));rows.push([m,'ИТОГО',t.bal,t.inc,t.exp,r.note||''])});let csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n');download('my-finances.csv',csv,'text/csv;charset=utf-8')};
+document.getElementById('clearData').onclick=()=>{if(confirm('Удалить все записи, счета и настройки? Это действие нельзя отменить.')){localStorage.removeItem(KEY);state=structuredClone(defaultState);persist();render();renderEntry(monthNow())}};
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
